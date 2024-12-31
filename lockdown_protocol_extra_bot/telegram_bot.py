@@ -26,6 +26,7 @@ class GameBot:
         self.available_nicknames_cls = ["🟥 red", "🍊 orange", "🟨 yellow",
                                         "🟩 green", "🐬 cyan", "🟦 blue",
                                         "😈 purple", "🦄 pink", "⬜️ white"]  # 🟪 -- purple square
+        self.cur_round_count = 1
 
         self.bot = telebot.TeleBot(token)
         self.password = password
@@ -88,13 +89,15 @@ class GameBot:
         if not self.current_players:
             self.bot.reply_to(message, "❌ Нет игроков для начала раунда.")
             return
-        if len(self.current_players) < 1:  # 3
+        if len(self.current_players) < 3:
             self.notify_all("❌ Нужно хотя бы 3 игрока! ")
         else:
             player_challenges = distribute_challenges(self.current_players, get_challenges())
             for player_i in player_challenges:
                 self.bot.send_message(player_i, player_challenges[player_i])
-            self.notify_all("🔊 Раунд начался! ")
+            self.notify_all(f"🔊 Раунд {self.cur_round_count} начался! ")
+            print(f"Round {self.cur_round_count}: \n{player_challenges}")
+            self.cur_round_count += 1
 
     def reset(self, message):
         def ask_password(message):

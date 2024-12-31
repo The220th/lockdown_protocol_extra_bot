@@ -13,7 +13,9 @@ def distribute_challenges(players: dict, challenges: dict) -> dict:
     pb = ProbabilityBag(ch)
 
     c = 1
-    for player_i in players:
+    pl = list(players.keys()).copy()
+    random.shuffle(pl)
+    for player_i in pl:
         chosen_challenge = pb.pop()
         # if chosen_challenge == "0" and c > 0:
         #     c -= 1
@@ -21,7 +23,7 @@ def distribute_challenges(players: dict, challenges: dict) -> dict:
         res[player_i] = postprocess_challenge(challenges[chosen_challenge]["describe"],
                                               list(players.values()), players[player_i])
         res[player_i] = ("Правила: \n"
-                         "1) Никому нельзя рассказывать про это твоё доп. задание. \n"
+                         "1) Никому нельзя рассказывать про это твоё доп. задание. Оправдываться за своё поведение заданиями тоже нельзя. \n"
                          "2) Выполнять его нужно всеми силами и честно (оно обязательное). \n"
                          "3) Оно в приоритете над основным. \n"
                          "\n"
